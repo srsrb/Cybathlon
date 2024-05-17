@@ -6,22 +6,22 @@ def calcul_angle(contour):
     angle = np.arctan2(vy, vx) * 180 / np.pi
     return np.mean(angle)
 
-image = cv2.imread('exemplebande.png')
+image = cv2.imread('ressources/exemplebande.png')
 
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  # On modifie l'image en une echelle de gris
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 lower_blue = np.array([100, 50, 50])
 upper_blue = np.array([140, 255, 255])
-mask_blue = cv2.inRange(image, lower_blue, upper_blue)  # Filtre bleu
+mask_blue = cv2.inRange(image, lower_blue, upper_blue)
 
 lower_black = np.array([0, 0, 0])
 upper_black = np.array([70, 70, 70])
-mask_black = cv2.inRange(image, lower_black, upper_black)   # Filtre noir
+mask_black = cv2.inRange(image, lower_black, upper_black)
 
 contours,_ = cv2.findContours(mask_black, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
 for contour in contours:
-    cv2.drawContours(image, [contour], -1, (0, 255, 0), 2)  # On affiche le contour
+    cv2.drawContours(image, [contour], -1, (0, 255, 0), 2)
     angle = calcul_angle(contour)
     print("Angle de rotation nécessaire : {:.2f} degrés".format(angle))
 

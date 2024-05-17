@@ -20,12 +20,8 @@ def gamma_correction(image, gamma=1.0):
     return cv2.LUT(image, table)
 
 def getBlue(frame):
-
-    # Convertir l'image en espace de couleur HSV
     hsv_image = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-    # Sélectionner une couleur sur l'image (par exemple, en cliquant dessus)
-    # Remplacer les coordonnées (x, y) par les coordonnées du pixel sélectionné
     y, x, _ = frame.shape 
     x=int(x/2)
     y=int(y/2)
@@ -33,9 +29,7 @@ def getBlue(frame):
     selected_color = hsv_image[y, x]
     print(selected_color)
 
-    # Afficher les valeurs de couleur sélectionnées
-    # Définir les bornes pour créer le masque
-    tolerance = 15  # Tolérance pour la détection
+    tolerance = 15
     lower_bound = np.array([selected_color[0] - tolerance, selected_color[1] - tolerance, selected_color[2] - tolerance])
     upper_bound = np.array([selected_color[0] + tolerance, selected_color[1] + tolerance, selected_color[2] + tolerance])
     return lower_bound, upper_bound
@@ -89,8 +83,8 @@ def detect_mat(frame):
     poly = cv2.approxPolyDP(max_contour, epsilon, True)
     x, y, w, h = cv2.boundingRect(poly)
 
-    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 6)
-    cv2.polylines(frame, [poly], isClosed=True, color=(255, 0, 0), thickness=8)
+    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 4)
+    cv2.polylines(frame, [poly], isClosed=True, color=(255, 0, 0), thickness=4)
 
     cv2.imshow("Contours detected", contour_mask)
     
@@ -260,9 +254,14 @@ def image(filename):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
+def demo(filename):
+    global engine
+    engine = None
+
+    video(filename)
+
 def main():
     global engine
-
     engine = None
 
     if len(sys.argv) == 1:
